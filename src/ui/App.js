@@ -1,5 +1,7 @@
 import Api from "./Api.js";
 import Hand from "./Hand.js";
+import Deck from "./Deck.js";
+
 import { useState, useCallback } from "react";
 import DrawButton from "./DrawButton.js";
 /**
@@ -8,12 +10,13 @@ import DrawButton from "./DrawButton.js";
    Better yet, let's change it to a different "Play Again" button that
    resets everything and plays another hand (with a new Deck).
 **/
-export default function App({ initialCards }) {
+export default function App({ initialCards, fetchedDeck }) {
   const [cards, setCards] = useState(initialCards);
   const [selected, setSelected] = useState([]);
   const [unselectedAcesCount, setUnselectedAcesCount] = useState(
     numberOfUnselectedAces(cards)
   );
+  const deck = new Deck(fetchedDeck.deckID);
 
   const [newGame, setNewGame] = useState(false);
 
@@ -61,8 +64,11 @@ export default function App({ initialCards }) {
     console.log(`need to fetch ${selected.length} cards`);
 
     // fetch the new cards
-    const fetchedCards = await Promise.all(
-      /**
+    console.log(deck);
+    const fetchedCards = await deck.dealV2(s);
+
+    //await Promise.all(
+    /**
          This is some wacky functional programming magic. It's bad
          code, but you should practice understanding it.  Essentially,
          we're creating a new array of the appropriate length, then
@@ -73,10 +79,10 @@ export default function App({ initialCards }) {
          much simpler single API call that specifies the number of
          cards we want dealt.
        **/
-      Array.from(Array(s).keys()).map((arg, index) => {
-        return Api.deal();
-      })
-    );
+    // Array.from(Array(s).keys()).map((arg, index) => {
+    //   return Api.deal();
+    //})
+    //);
 
     // let's print out the fetched cards
     console.log(fetchedCards);
@@ -94,6 +100,7 @@ export default function App({ initialCards }) {
       }
     });
 
+    // await deck.discard(cards, selected);
     // update state, causing a re-render
     setCards(newCards);
     setSelected([]);
