@@ -1,4 +1,4 @@
-# API Documentation
+# API Documentation (auto generated)
 
 The `Api` class provides methods to interact with the card dealing API.
 
