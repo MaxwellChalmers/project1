@@ -1,8 +1,93 @@
+
 body {
-  background: #5a5f;
+  background: linear-gradient(to right, indigo, blue, purple, indigo, blue, purple, red, 
+  indigo, blue, purple, indigo, blue, purple, red,
+  indigo, blue, purple, indigo, blue, purple, red,
+  indigo, blue, purple, indigo, blue, purple, red,
+  indigo, blue, purple, indigo, blue, purple);
   color: white;
+}
+
+#handRank {
+  position: fixed;
+  bottom: 250px;
+  right: 50px; /* Adjust the distance from the right edge */
+  background-color: #5a5f5f;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-family: "Comic Sans MS", cursive; /* Change the font */
+}
+
+.vertical-line {
+  position: fixed;
+  bottom: 200px; /* Adjust the distance from the bottom */
+  right: 165px;
+  width: 4px;
+  height: 35px; /* Adjust the height of the line */
+  background-color: grey;
+}
+
+.image-container {
+  position: fixed;
+  bottom: 20px; /* Adjust the distance from the bottom */
+  right: 20px; /* Adjust the distance from the right */
+  width: 200px; /* Adjust the width of the container */
+  height: 200px; /* Adjust the height of the container */
+  background-image: url('pokerplayer.png'); /* Replace 'path/to/your/image.png' with the path to your PNG image */
+  background-size: contain; /* Adjust the image size to fit the container */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
+  opacity: 0.75; /* Adjust the opacity for transparency */
+}
+
+#chip-container {
+  position: fixed;
+  top: 50%;
+  left: 10px; /* Adjust the left position as needed */
+  transform: translateY(-50%);
+}
+
+#chip-button {
+  background: transparent url('chip.png') center/contain no-repeat; /* Replace 'path/to/your/chip.png' with the path to your chip image */
+  border: none;
+  padding: 50px; /* Adjust the padding to make the button size match the chip size */
+  font-size: 20px; /* Adjust the font size as needed */
+  color: white; /* Adjust the color of the text */
+  cursor: pointer;
+}
+
+#chip-text {
+  opacity: 0;
+  transition: opacity 1s ease; /* Adjust the duration of the fading animation */
+}
+
+.show {
+  opacity: 1;
 }
 
 .card:hover {
   cursor: pointer;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.button {
+  font-weight: bold;
+  color: red;
+  font-size: 25px;
 }
