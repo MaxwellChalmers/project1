@@ -5,34 +5,19 @@ import App from "./App.js";
 import Deck from "./Deck.js";
 
 async function main() {
-  //const newDeck = await Api.deck();
-  //console.log(newDeck);
+  const deck = await Deck.create();
 
-  const fetchedDeck =  Deck.create();
+  const d = await deck.getDeck();
 
-  
+  console.log(d);
+  let initialCards = await deck.deal(5);
+  console.log(initialCards);
 
-
-  console.log(fetchedDeck.deckID);
-
-  // let the server deal the hand
-  const initialCards = await fetchedDeck.dealV2(5);
-
-  /**await Promise.all([
-    // note: this is still calling the v1 APIs
-    Api.deal(),
-    Api.deal(),
-    Api.deal(),
-    Api.deal(),
-    Api.deal(),
-  ]);
-
-  **/
   console.log(initialCards);
 
   // create React elements
   const root = createRoot(document.getElementById("app"));
-  root.render(<App initialCards={initialCards} fetchedDeck={fetchedDeck} />);
+  root.render(<App initialCards={initialCards} fetchedDeck={deck} />);
 }
 
 window.onload = main;

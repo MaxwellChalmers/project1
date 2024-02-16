@@ -4,26 +4,19 @@ import Deck from "./Deck.js";
 
 import { useState, useCallback } from "react";
 import DrawButton from "./DrawButton.js";
-/**
-   Note: For each game, we'll only allow the "Draw" to happen once.
-   This means we should hide the "Draw" button after it is clicked.
-   Better yet, let's change it to a different "Play Again" button that
-   resets everything and plays another hand (with a new Deck).
-**/
-export default function App({ initialCards, deck }) {
 
+export default function App({ initialCards, fetchedDeck }) {
   const [cards, setCards] = useState(initialCards);
   const [selected, setSelected] = useState([]);
   const [unselectedAcesCount, setUnselectedAcesCount] = useState(
     numberOfUnselectedAces(cards)
   );
 
-  // const deck =  Deck(fetchedDeck.deckID); 
-
   const [newGame, setNewGame] = useState(false);
   const [handRank, setHandRank] = useState("I don't know XD");
   const [bet, setBet] = useState(0);
   const [betMessage, setBetMessage] = useState("");
+  const deck = fetchedDeck;
 
   async function placeBet() {
     if (newGame) {
@@ -48,7 +41,6 @@ export default function App({ initialCards, deck }) {
     if (newGame) {
       return;
     }
-    // setUnselectedAcesCount(numberOfUnselectedAces(cards));
 
     const isAce = cards[index].rank === "A";
     console.log(unselectedAcesCount);
@@ -85,26 +77,8 @@ export default function App({ initialCards, deck }) {
 
     // fetch the new cards
     console.log(deck);
-    const fetchedCards = await deck.dealV2(s);
+    const fetchedCards = await deck.deal(s);
 
-    //await Promise.all(
-    /**
-         This is some wacky functional programming magic. It's bad
-         code, but you should practice understanding it.  Essentially,
-         we're creating a new array of the appropriate length, then
-         mapping over it to create an array of Promises, which we then
-         await.
-
-         Once API v2 is created, we can delete this and change it to a
-         much simpler single API call that specifies the number of
-         cards we want dealt.
-       **/
-    // Array.from(Array(s).keys()).map((arg, index) => {
-    //   return Api.deal();
-    //})
-    //);
-
-    // let's print out the fetched cards
     console.log(fetchedCards);
 
     // create the new hand with the fetched cards replacing the

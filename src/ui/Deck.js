@@ -3,25 +3,21 @@ import Hand from "./Hand.js";
 import { useState, useCallback } from "react";
 
 export default class Deck {
+  static async create() {
+    const ID = await Api.deck(); // create the deck on the server and get the id
+    console.log(ID.message);
+    return new Deck(ID.message);
+  }
 
-static async create() {
-  const ID = await Api.deck(); // create the deck on the server and get the id
-  return new Deck(ID);
-}  
-constructor(ID) {
+  constructor(ID) {
     this.deckID = ID;
-}
+  }
 
   async getDeck() {
-
     return this.deckID;
   }
 
-  async Deal() {
-    return await Api.deal();
-  }
-
-  async dealV2(count) {
+  async deal(count) {
     return await Api.dealV2(this.deckID, count);
   }
 
