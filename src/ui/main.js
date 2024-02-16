@@ -8,8 +8,10 @@ async function main() {
   //const newDeck = await Api.deck();
   //console.log(newDeck);
 
-  const fetchedDeck = new Deck();
-  await fetchedDeck.getDeck();
+  const fetchedDeck =  Deck.create();
+
+  
+
 
   console.log(fetchedDeck.deckID);
 

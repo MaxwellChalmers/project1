@@ -3,7 +3,7 @@ import Card from "./Card.js";
 
 export default function Hand({ cards, selected, onSelect }) {
   return (
-    <div>
+    <div className="card-container">
       {cards.map((c, index) => (
         <Card
           key={index}

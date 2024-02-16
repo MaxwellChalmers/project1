@@ -10,15 +10,33 @@ import DrawButton from "./DrawButton.js";
    Better yet, let's change it to a different "Play Again" button that
    resets everything and plays another hand (with a new Deck).
 **/
-export default function App({ initialCards, fetchedDeck }) {
+export default function App({ initialCards, deck }) {
+
   const [cards, setCards] = useState(initialCards);
   const [selected, setSelected] = useState([]);
   const [unselectedAcesCount, setUnselectedAcesCount] = useState(
     numberOfUnselectedAces(cards)
   );
-  const deck = new Deck(fetchedDeck.deckID);
+
+  // const deck =  Deck(fetchedDeck.deckID); 
 
   const [newGame, setNewGame] = useState(false);
+  const [handRank, setHandRank] = useState("I don't know XD");
+  const [bet, setBet] = useState(0);
+  const [betMessage, setBetMessage] = useState("");
+
+  async function placeBet() {
+    if (newGame) {
+      return;
+    }
+    const newBet = bet + 10;
+    setBet(newBet);
+    setBetMessage(` with A ${newBet} $ BET !`);
+  }
+
+  async function getRank() {
+    setHandRank("I don't know");
+  }
 
   function numberOfUnselectedAces(cards) {
     return cards.reduce((count, card) => {
@@ -59,6 +77,8 @@ export default function App({ initialCards, fetchedDeck }) {
     let s = selected.length;
     if (newGame) {
       s = 5;
+      setBetMessage("");
+      setBet(0);
     }
 
     console.log(`need to fetch ${selected.length} cards`);
@@ -106,16 +126,31 @@ export default function App({ initialCards, fetchedDeck }) {
     setSelected([]);
     setNewGame(!newGame);
     setUnselectedAcesCount(numberOfUnselectedAces(newCards));
+    //getRank();
+    setBet(0);
   }, [selected, cards, newGame]);
 
   return (
-    <div>
+    <div className="container">
       <Hand
         cards={cards}
         selected={selected}
         onSelect={(index) => toggleSelected(index)}
       />
-      <DrawButton onClick={fetchNewCards} />
+
+      <DrawButton onClick={fetchNewCards} className="button" />
+
+      <div id="handRank">
+        you have a {handRank}
+        {betMessage}!
+      </div>
+      <div class="vertical-line"></div>
+
+      <div id="chip-container">
+        <button id="chip-button" onClick={placeBet}>
+          Gambling is fun!
+        </button>
+      </div>
     </div>
   );
 }

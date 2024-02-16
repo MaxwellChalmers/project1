@@ -9,6 +9,8 @@ export default function DrawButton({ onClick }) {
   };
 
   return (
-    <button onClick={checkClick}>{HasDrawn ? "New Game?" : "Draw!"}</button>
+    <button onClick={checkClick} className="button">
+      {HasDrawn ? "New Game?" : "Draw!"}
+    </button>
   );
 }

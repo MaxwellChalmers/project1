@@ -22,17 +22,19 @@ export default class Api {
     throw new Error(`expected string, received ${typeof id}`);
   }
 
-  static async dealV2(id, count) {
+  static async dealV2(id, numberOfCards) {
     // while testing things out, you can override response to be whatever you want
 
-    if (typeof id !== "string" || typeof count !== "number") {
+    if (typeof id !== "string" || typeof numberOfCards !== "number") {
       throw new Error(
         "dealV2 requires a deck id and a number representing how many cards should be dealt"
       );
     }
-    // const resp = await fetch(`/api/v2/deck/${id}/deal`, { method: "POST" });
-    const cards = await Promise.all(
-      /**
+
+    let drawnCards  = await fetch(`/api/v2/deck/${id}/deal?count={numberOfCards}`)
+   /** const cards = await Promise.all(
+      /
+
          This is some wacky functional programming magic. It's bad
          code, but you should practice understanding it.  Essentially,
          we're creating a new array of the appropriate length, then
@@ -42,17 +44,21 @@ export default class Api {
          Once API v2 is created, we can delete this and change it to a
          much simpler single API call that specifies the number of
          cards we want dealt.
-       **/
+
+       
       Array.from(Array(count).keys()).map((arg, index) => {
         return Api.deal();
       })
-    );
+      
 
-    return cards;
+    ); **/
+
+    return drawnCards;
   }
 
-  static async findRank(hand) {
-    const resp = await fetch("/api/v3/findRank");
+  static async highestRank(hand) {
+    const resp = await fetch("/api/v2/highestRank");
+
     const rank = await resp.json();
     return rank;
   }
