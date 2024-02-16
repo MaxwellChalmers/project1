@@ -12,6 +12,7 @@ async function main() {
 
   
 
+
   console.log(fetchedDeck.deckID);
 
   // let the server deal the hand
