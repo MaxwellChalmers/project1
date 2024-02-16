@@ -10,13 +10,13 @@ import DrawButton from "./DrawButton.js";
    Better yet, let's change it to a different "Play Again" button that
    resets everything and plays another hand (with a new Deck).
 **/
-export default function App({ initialCards, fetchedDeck }) {
+export default function App({ initialCards, deck }) {
   const [cards, setCards] = useState(initialCards);
   const [selected, setSelected] = useState([]);
   const [unselectedAcesCount, setUnselectedAcesCount] = useState(
     numberOfUnselectedAces(cards)
   );
-  const deck = new Deck(fetchedDeck.deckID);
+  // const deck =  Deck(fetchedDeck.deckID); 
   const [newGame, setNewGame] = useState(false);
   const [handRank, setHandRank] = useState("I don't know XD");
   const [bet, setBet] = useState(0);
@@ -123,7 +123,7 @@ export default function App({ initialCards, fetchedDeck }) {
     setSelected([]);
     setNewGame(!newGame);
     setUnselectedAcesCount(numberOfUnselectedAces(newCards));
-    getRank();
+    //getRank();
     setBet(0);
   }, [selected, cards, newGame]);
 
