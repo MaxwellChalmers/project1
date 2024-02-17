@@ -7,12 +7,28 @@ from fastapi.staticfiles import StaticFiles
 from deck import Deck
 from fastapi import Query
 from card import Card
+import secrets
+import string
 
 SUITS = ["C", "D", "H", "S"]
 RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "0", "J", "Q", "K", "A"]
 allDecks = {}
 
 dummySecureId = "123"
+
+
+
+# fully made by GPT, secrets is supposed to be cryptographically secure so hopefully that 
+# means there will not be any dupes 
+def deckNamer():
+    # Define the characters to choose from for the random string
+    characters = string.ascii_letters + string.digits  # You can include other characters if needed
+
+    # Generate a random string of the specified length
+    deck_name = ''.join(secrets.choice(characters) for _ in range(100))
+    
+    return deck_name
+
 
 
 app = FastAPI()
@@ -30,8 +46,9 @@ async def api_v1_deal():
 
 @app.post("/api/v2/deck/new")
 async def api_v2_deck_new():
-    d = Deck(dummySecureId)
-    allDecks[dummySecureId] = d
+    secureId = deckNamer()
+    d = Deck(secureId)
+    allDecks[secureId] = d
 
     return {"message": d.id}
 
