@@ -45,6 +45,19 @@ export default class Api {
     return drawnCards;
   }
 
+  static async discard(id, cards) {
+    console.log(cards);
+    const response = await fetch(`/api/v2/deck/${id}/discard/~${cards}`, {
+      method: "POST",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to discard cards");
+    }
+
+    return await response.json();
+  }
+
   static async highestRank(hand) {
     const resp = await fetch("/api/v2/highestRank");
 

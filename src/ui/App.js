@@ -93,9 +93,13 @@ export default function App({ initialCards, fetchedDeck }) {
         return card;
       }
     });
-
-    // await deck.discard(cards, selected);
+    console.log("asdfasdfadsfdas");
+    console.log(cards);
+    console.log(selected);
+    console.log(cards[1].rank);
+    await deck.discard(cards, selected, newGame);
     // update state, causing a re-render
+
     setCards(newCards);
     setSelected([]);
     setNewGame(!newGame);

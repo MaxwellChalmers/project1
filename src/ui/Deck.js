@@ -21,7 +21,27 @@ export default class Deck {
     return await Api.dealV2(this.deckID, count);
   }
 
-  async Discard(hand, selected) {
-    return await Api.discard(hand, selected, this.deckID);
+  async strRepCards(hand, selected) {
+    if (selected.length === 0) {
+      return "NONE";
+    }
+    let cardsString = "";
+    for (let i = 0; i < selected.length; i++) {
+      cardsString += hand[selected[i]].rank;
+      cardsString += hand[selected[i]].suit;
+    }
+    return cardsString;
+  }
+
+  async discard(hand, selected, newGame) {
+    if (newGame) {
+      console.log(this.deckID);
+      const cards = await this.strRepCards(hand, [0, 1, 2, 3, 4]);
+      console.log(cards);
+      return await Api.discard(this.deckID, cards);
+    }
+    console.log(this.deckID);
+    const cards = await this.strRepCards(hand, selected);
+    return await Api.discard(this.deckID, cards);
   }
 }

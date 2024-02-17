@@ -18,7 +18,7 @@ class Deck:
 
     def discard(self, card):
         self.deck.append(card)
-        self.shuffle()
+
     
     def shuffle(self):
         random.shuffle(self.deck)
