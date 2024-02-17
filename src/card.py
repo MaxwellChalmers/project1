@@ -16,7 +16,6 @@ class Card:
             case _:
                 self.rNum =(rank, rank) 
         
-        print("Card constructor")
     def getRank(self):
         return self.r
     def getSuit(self):
