@@ -108,4 +108,152 @@ async def discard_cards(deck_id: str, cards: str):
     
     return {"message": "Cards discarded successfully"}
 
+
+
+@app.get("/api/v2/highestRank/~{cards}")
+async def highest_rank(cards: str):
+    hand = stringToCards(cards)
+    if isStraightFlush(hand):
+        return {"message": "Straight Flush"}
+    if isFourOfAKind(hand):
+        return {"message": "Four of A Kind"}
+    if isFullHouse(hand):
+        return {"message": "Full House"}
+    if isFlush(hand):
+        return {"message": "Flush"}
+    if isStraight(hand):
+        return {"message": "Straight"}
+    if isThreeOfAKind(hand):
+        return {"message": "Three of A Kind"}
+    if isTwoPair(hand):
+        return {"message": "Two Pair"}
+    if isPair(hand):
+        return {"message": "One Pair"}
+    
+    return {"message": "High Card"}
+
+def isStraightFlush(hand: list[Card]) -> bool:
+    isstraight = isStraight(hand)
+    isflush = isFlush(hand)
+    return isstraight and isflush
+
+def isFlush(hand: list[Card]) -> bool:
+    flush = True
+    suit = hand[0].getSuit() 
+    for c in hand:
+        if c.getSuit() != suit:
+            flush = False
+            break
+    
+    return flush
+
+# a true abomination of coding style but I think it will work           
+def isStraight(hand: list[Card]) -> bool:
+    if isPair(hand):
+        return False
+    lowest = [hand[0].getRankNumbers()[0], hand[0].getRankNumbers()[1]]
+    highest = [hand[0].getRankNumbers()[0], hand[0].getRankNumbers()[1]]
+
+    for handVals in hand:
+        if handVals.getRankNumbers()[0] < lowest[0]:
+            lowest[0] = handVals.getRankNumbers()[0]
+        if handVals.getRankNumbers()[0] > highest[0]:
+            highest[0] = handVals.getRankNumbers()[0]
+        if handVals.getRankNumbers()[1] < lowest[1]:
+            lowest[1] = handVals.getRankNumbers()[1]
+        if handVals.getRankNumbers()[1] > highest[1]:
+            highest[1] = handVals.getRankNumbers()[1]
+    if highest[0] - lowest[0] == 4:
+        return True
+    if highest[1] - lowest[1] == 4:
+        return True
+    
+    return False
+        
+def isPair(hand: list[Card]) -> bool:
+    for i in range(0, 5):
+        for k in range(i + 1, 5):
+            if hand[i].getRank() == hand[k].getRank():
+                return True
+            
+    return False
+
+
+def isFourOfAKind(hand: list[Card]) -> bool:
+    diffrentcards = 0
+    card = hand[0] 
+    for i in range (1, 5):
+        if card.getRank() != hand[i].getRank():
+            diffrentcards += 1
+    if diffrentcards == 1:
+        return True
+    card = hand[1]
+    for i in range(2,5):
+        if card.getRank() != hand[i].getRank():
+            return False
+
+    return True        
+    
+
+def isFullHouse(hand: list[Card]) -> bool:
+    ispair = False
+    isthree = False
+    for i in range(0, 3):
+        card = hand[i]
+        count = 0
+        for k in range(i + 1, 5):
+            if card.getRank() == hand[k].getRank():
+                count += 1
+        if count == 2:
+            isthree = True
+    
+    for i in range(0, 4):
+        card = hand[i]
+        count = 0
+        for k in range(i + 1, 5):
+            if card.getRank() == hand[k].getRank():
+                count += 1
+        if count == 1:
+            ispair = True
+
+    return ispair and isthree
+
+
+def isThreeOfAKind(hand: list[Card]) -> bool:
+    for i in range(0, 3):
+        card = hand[i]
+        count = 0
+        for k in range(i + 1, 5):
+            if card.getRank() == hand[k].getRank():
+                count += 1
+        if count == 2:
+            return True
+    return False
+        
+        
+
+def isTwoPair(hand: list[Card]) -> bool:
+    firstpair = "n"
+    for i in range(0, 4):
+        card = hand[i]
+        count = 0
+        for k in range(i + 1, 5):
+            if card.getRank() == hand[k].getRank():
+                firstpair = card.getRank()    
+    for i in range(0, 4):
+        card = hand[i]
+        count = 0
+        for k in range(i + 1, 5):
+            if card.getRank() == hand[k].getRank() and card.getRank() != firstpair:
+                return True
+
+    return False
+
+
+
+
+
+
+
+
 app.mount("/", StaticFiles(directory="ui/dist", html=True), name="ui")

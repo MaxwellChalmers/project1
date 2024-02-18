@@ -14,9 +14,13 @@ class Card:
             case "0":
                 self.rNum =(10, 10)
             case _:
-                self.rNum =(rank, rank) 
+                self.rNum =(int(rank), int(rank)) 
         
     def getRank(self):
         return self.r
     def getSuit(self):
         return self.s
+    
+    def getRankNumbers(self):
+        return self.rNum
+    

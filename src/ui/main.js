@@ -7,10 +7,13 @@ import Deck from "./Deck.js";
 async function main() {
   const deck = await Deck.create();
   let initialCards = await deck.deal(5);
+  const rank = await deck.highestRank(initialCards);
 
   // create React elements
   const root = createRoot(document.getElementById("app"));
-  root.render(<App initialCards={initialCards} fetchedDeck={deck} />);
+  root.render(
+    <App initialCards={initialCards} fetchedDeck={deck} initialRank={rank} />
+  );
 }
 
 window.onload = main;

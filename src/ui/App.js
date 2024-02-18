@@ -4,7 +4,7 @@ import Deck from "./Deck.js";
 import DrawButton from "./DrawButton.js";
 import { useState, useCallback } from "react";
 
-export default function App({ initialCards, fetchedDeck }) {
+export default function App({ initialCards, fetchedDeck, initialRank }) {
   const [cards, setCards] = useState(initialCards); //the hand used by the app
   const [selected, setSelected] = useState([]); //tracker for card selection
 
@@ -13,11 +13,12 @@ export default function App({ initialCards, fetchedDeck }) {
     numberOfUnselectedAces(cards)
   );
   const [newGame, setNewGame] = useState(false); // if true sets the app to function for a new game (disables selection of cards ect.)
-  const [handRank, setHandRank] = useState("IDK"); // holds the rank of the poker hand shown in the app
+  const [handRank, setHandRank] = useState(initialRank); // holds the rank of the poker hand shown in the app
   const [bet, setBet] = useState(0); // this counts the size of the bet on any certain hand
   const [betMessage, setBetMessage] = useState(""); // changes the text shown on the page
   const deck = fetchedDeck; // the deck used for most card fuctionallty
 
+  //getRank(cards);
   // adds to the bet on the chip button press
   async function placeBet() {
     if (newGame) {
@@ -29,8 +30,9 @@ export default function App({ initialCards, fetchedDeck }) {
   }
 
   //finds the rank for a given hand(will be calling from a deck API call)
-  async function getRank() {
-    setHandRank("I don't know");
+  async function getRank(hand) {
+    const rank = await deck.highestRank(hand);
+    setHandRank(rank);
   }
 
   //counts the number of visble aces in a hand
@@ -103,6 +105,7 @@ export default function App({ initialCards, fetchedDeck }) {
 
     setCards(newCards);
     setSelected([]);
+    await getRank(newCards);
     setNewGame(!newGame);
     setUnselectedAcesCount(numberOfUnselectedAces(newCards));
     //getRank();

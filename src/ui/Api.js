@@ -47,9 +47,9 @@ export default class Api {
   }
 
   static async highestRank(hand) {
-    const resp = await fetch("/api/v2/highestRank");
-
+    const resp = await fetch(`/api/v2/highestRank/~${hand}`);
     const rank = await resp.json();
-    return rank;
+    console.log(rank.message);
+    return rank.message;
   }
 }
