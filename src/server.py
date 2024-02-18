@@ -7,16 +7,31 @@ from fastapi.staticfiles import StaticFiles
 from deck import Deck
 from fastapi import Query
 from card import Card
+import secrets
+import string
+
 
 SUITS = ["C", "D", "H", "S"]
 RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "0", "J", "Q", "K", "A"]
 allDecks = {}
 
-dummySecureId = "123"
+
+# fully made by chatGPT, secrets is supposed to be cryptographically secure so hopefully that 
+# means there will not be any dupes 
+def deckNamer():
+    # Define the characters to choose from for the random string
+    characters = string.ascii_letters + string.digits  # You can include other characters if needed
+
+    # Generate a random string of the specified length
+    deck_name = ''.join(secrets.choice(characters) for _ in range(100))
+    
+    return deck_name
 
 
 app = FastAPI()
 # make the secure ID per instance after the baseline is working and connected
+
+app = FastAPI()
 
 @app.get("/api/v1/hello")
 async def api_v1():
@@ -28,14 +43,16 @@ async def api_v1_deal():
     return {"rank": random.choice(RANKS), "suit": random.choice(SUITS)}
 
 
+#creates a new deck with a unique ID 
 @app.post("/api/v2/deck/new")
 async def api_v2_deck_new():
-    d = Deck(dummySecureId)
-    allDecks[dummySecureId] = d
+    secureId = deckNamer()
+    d = Deck(secureId)
+    allDecks[secureId] = d
 
     return {"message": d.id}
 
-
+#checks to see if a deck with a certain ID exists
 @app.get("/api/v2/deck/{deck_id}")
 async def api_v2_deck(deck_id: str):
     print(f"need to fetch Deck {deck_id}")
@@ -43,28 +60,25 @@ async def api_v2_deck(deck_id: str):
         return deck_id
     raise HTTPException(status_code=404, detail=f"Deck {deck_id} not found")
 
-
+#deals count number of cards from deck with id deck_id
 @app.get("/api/v2/deck/{deck_id}/deal")
 async def api_v2_deck(deck_id: str, count: int = Query(..., gt=0)):
-    print(f"need to deal {count} cards from {deck_id}")
+    #print(f"need to deal {count} cards from {deck_id}")
+
     if (deck_id in allDecks.keys()):
         d = allDecks[deck_id]
         drawnCards = []
         for i in range(0, count):
             drawnCards.append(d.drawCard())
-        
-
         cards =  list()
         for i in range(0, count):
             c = drawnCards[i]
-            print(c)
             cards.append({"rank": c.getRank(),"suit": c.getSuit()}) 
         
         return cards
-    print(count)
-    print(deck_id)
     raise HTTPException(status_code=404, detail=f"Deck {deck_id} not found")
 
+#converts card string sent from frontend into python card Classes
 def stringToCards(cardS: str):
     suits = []
     ranks = []
@@ -80,7 +94,7 @@ def stringToCards(cardS: str):
     return cards
     
 
-
+# adds cards discarded back into the deck Class with ID deck_id 
 @app.post("/api/v2/deck/{deck_id}/discard/~{cards}")
 async def discard_cards(deck_id: str, cards: str):
     if deck_id not in allDecks.keys():
