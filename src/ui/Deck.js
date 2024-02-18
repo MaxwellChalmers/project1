@@ -32,6 +32,12 @@ export default class Deck {
     return cardsString;
   }
 
+  async highestRank(hand) {
+    const cards = await this.strRepCards(hand, [0, 1, 2, 3, 4]);
+
+    return await Api.highestRank(cards);
+  }
+
   // sends cards to return to the backend deck
   async discard(hand, selected, newGame) {
     if (newGame) {
