@@ -10,6 +10,7 @@ from card import Card
 import secrets
 import string
 
+
 SUITS = ["C", "D", "H", "S"]
 RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "0", "J", "Q", "K", "A"]
 allDecks = {}
@@ -27,6 +28,8 @@ def deckNamer():
     return deck_name
 
 
+app = FastAPI()
+# make the secure ID per instance after the baseline is working and connected
 
 app = FastAPI()
 
@@ -61,6 +64,7 @@ async def api_v2_deck(deck_id: str):
 @app.get("/api/v2/deck/{deck_id}/deal")
 async def api_v2_deck(deck_id: str, count: int = Query(..., gt=0)):
     #print(f"need to deal {count} cards from {deck_id}")
+
     if (deck_id in allDecks.keys()):
         d = allDecks[deck_id]
         drawnCards = []

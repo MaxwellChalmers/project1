@@ -1,12 +1,14 @@
 from card import Card
 import random
 
+
 SUITS = ["C", "D", "H", "S"]
 RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "0", "J", "Q", "K", "A"]
 
 class Deck:
     
     def __init__(self, id):
+
         self.deck = [Card(rank, suit) for rank in RANKS for suit in SUITS]
         self.shuffle()
         self.id = id

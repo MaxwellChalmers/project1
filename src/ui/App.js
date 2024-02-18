@@ -7,6 +7,7 @@ import { useState, useCallback } from "react";
 export default function App({ initialCards, fetchedDeck }) {
   const [cards, setCards] = useState(initialCards); //the hand used by the app
   const [selected, setSelected] = useState([]); //tracker for card selection
+
   const [unselectedAcesCount, setUnselectedAcesCount] = useState(
     // maintains the number of aces in a hand that haven't been selected for discard
     numberOfUnselectedAces(cards)
@@ -99,6 +100,7 @@ export default function App({ initialCards, fetchedDeck }) {
     // returns discarded cards to the backend deck
     await deck.discard(cards, selected, newGame);
     // update state, causing a re-render
+
     setCards(newCards);
     setSelected([]);
     setNewGame(!newGame);

@@ -38,6 +38,7 @@ export default class Deck {
       const cards = await this.strRepCards(hand, [0, 1, 2, 3, 4]);
       return await Api.discard(this.deckID, cards);
     }
+
     const cards = await this.strRepCards(hand, selected);
     return await Api.discard(this.deckID, cards);
   }
