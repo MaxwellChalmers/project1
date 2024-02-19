@@ -198,6 +198,7 @@ def isFourOfAKind(hand: list[Card]) -> bool:
 def isFullHouse(hand: list[Card]) -> bool:
     ispair = False
     isthree = False
+    threeRank = "N"
     for i in range(0, 3):
         card = hand[i]
         count = 0
@@ -206,17 +207,19 @@ def isFullHouse(hand: list[Card]) -> bool:
                 count += 1
         if count == 2:
             isthree = True
+            threeRank = card.getRank()
+
     
     for i in range(0, 4):
         card = hand[i]
         count = 0
         for k in range(i + 1, 5):
-            if card.getRank() == hand[k].getRank():
+            if card.getRank() == hand[k].getRank() and card.getRank() != threeRank:
                 count += 1
         if count == 1:
             ispair = True
 
-    return ispair and isthree
+    return (ispair and isthree)
 
 
 def isThreeOfAKind(hand: list[Card]) -> bool:
