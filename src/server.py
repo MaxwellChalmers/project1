@@ -10,22 +10,41 @@ from card import Card
 import secrets
 import string
 
+# Import Stripe library here
+#import stripe
+
+# Initialize Stripe with your secret API key
+#stripe.api_key = "sk_test_51OlO0XKFHrKzuFAB3zjamfz1oodKiNpxHGmGsMrfbShEe66cHily0Z8bCZbplMk60HlK2KyqOQlMRrsdjDvLXU2y00ytpPOPAS"
+
+#server-1  | Installing dependencies from lock file
+#server-1  | Warning: poetry.lock is not consistent with pyproject.toml. You may be getting improper dependencies. Run `poetry lock [--no-update]` to fix it.
+#server-1  | 
+#server-1  | Because full-stack-poker depends on stripe (^2.5.0) which doesn't match any versions, version solving failed.
+
 SUITS = ["C", "D", "H", "S"]
 RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "0", "J", "Q", "K", "A"]
 allDecks = {}
 
-
-# fully made by chatGPT, secrets is supposed to be cryptographically secure so hopefully that 
-# means there will not be any dupes 
+# Fully made by chatGPT, secrets is supposed to be cryptographically secure so hopefully that
+# means there will not be any dupes
 def deckNamer():
     # Define the characters to choose from for the random string
     characters = string.ascii_letters + string.digits  # You can include other characters if needed
 
     # Generate a random string of the specified length
     deck_name = ''.join(secrets.choice(characters) for _ in range(100))
-    
+
     return deck_name
 
+app = FastAPI()
+
+# Add payment success endpoint
+@app.post("/api/v1/payment/success")
+async def payment_success():
+    # Perform actions after successful payment
+    # For example, increment the bet by 100
+    # Implement your logic here
+    return {"message": "Payment successful"}
 
 
 app = FastAPI()

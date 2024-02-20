@@ -1,6 +1,6 @@
-from node:lts
-ARG GID=1001
-ARG UID=1001
+from node:ltd
+ARG GID=20
+ARG UID=501
 COPY . /app
 WORKDIR /app
 RUN getent group ${GID} || groupadd -g ${GID} dev
