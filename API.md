@@ -45,7 +45,10 @@ Finds the rank of a given hand of cards.
 
 Returns cards that have been discarded from the hand to the deck
 
-- **Parameters**: -`id` (string): the secure id used to idenify the deck in the backend -`cards` (string): a string repersentation of the cards discarded from the hand
+- **Parameters**:
+  
+  - `id` (string): the secure id used to idenify the deck in the backend -
+  - `cards` (string): a string repersentation of the cards discarded from the hand
 
 - **Returns**: A promise that resolves to an message of the outcome of the discard atempt.
 
